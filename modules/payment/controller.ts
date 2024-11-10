@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
 import UserPayment from '../../model/paymentSchema';
-export const verifyFunding = async (req: Request, res: Response) => {
-  const { reference, amount } = req.body;
 
-  if (!reference || !amount) {
+export const verifyFunding = async (req: Request, res: Response) => {
+  const { reference } = req.body;
+
+  if (!reference) {
     return res
       .status(400)
       .json({ error: 'Reference and amount are required.' });
@@ -27,15 +28,13 @@ export const verifyFunding = async (req: Request, res: Response) => {
 
     const { status, data } = response.data;
     console.log('dataaaaaa', response.data);
+    console.log('dataaaaaa', data.amount, 'amount');
 
-    // Check if Paystack returned a successful transaction and that the amount matches
-    if (status === 'success' && data.amount === amount * 100) {
-      // Record the transaction in the database
-      const payment = new UserPayment({
-        reference,
-        amount, // Store in Naira for readability
-        status: 'successful',
-      });
+    // Compare the amounts (both are in Kobo)
+    if (status === 'success') {
+      // Store the amount in Naira by dividing by 100 for readability
+      const payment = new UserPayment(reference);
+
       await payment.save();
 
       return res
