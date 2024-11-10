@@ -9,7 +9,7 @@ import utilityRoute from './modules/utilities/router';
 import userProfile from './modules/profile/route';
 // import morgan from 'morgan';
 
-const Port = process.env.PORT || 4000;
+const Port = process.env.PORT || 1000;
 const app = express();
 
 // Middleware
