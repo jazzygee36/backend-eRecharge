@@ -1,7 +1,7 @@
 // api/user.ts
-import { NextApiRequest, NextApiResponse } from 'next';
+// import { NextApiRequest, NextApiResponse } from 'next';
 import cors from 'cors';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import UserRouter from '../modules/userAuth/router';
 import sequelize from '../config/db';
 
@@ -12,7 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', UserRouter);
 
 // Connect to the database for each function call
-sequelize.query('SELECT 1')
+sequelize
+  .query('SELECT 1')
   .then(() => {
     console.log('Connected to DB');
   })
@@ -21,6 +22,6 @@ sequelize.query('SELECT 1')
   });
 
 // Wrap Express in a handler function for Vercel
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default function handler(req: Request, res: Response) {
   return app(req, res);
 }

@@ -1,7 +1,7 @@
 // api/utility.ts
-import { NextApiRequest, NextApiResponse } from 'next';
+// import { NextApiRequest, NextApiResponse } from 'next';
 import cors from 'cors';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import utilityRoute from '../modules/utilities/router';
 import sequelize from '../config/db';
 
@@ -11,7 +11,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', utilityRoute);
 
-sequelize.query('SELECT 1')
+sequelize
+  .query('SELECT 1')
   .then(() => {
     console.log('Connected to DB');
   })
@@ -19,6 +20,6 @@ sequelize.query('SELECT 1')
     console.error('Failed to connect to the database:', error);
   });
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default function handler(req: Request, res: Response) {
   return app(req, res);
 }
