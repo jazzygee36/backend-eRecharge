@@ -3,9 +3,9 @@ import { Request, Response } from 'express';
 import UserPayment from '../../model/paymentSchema';
 
 export const verifyFunding = async (req: Request, res: Response) => {
-  const { reference } = req.body;
+  const { reference, amount } = req.body;
 
-  if (!reference) {
+  if (!reference || !amount) {
     return res
       .status(400)
       .json({ error: 'Reference and amount are required.' });
@@ -28,13 +28,12 @@ export const verifyFunding = async (req: Request, res: Response) => {
 
     const { status, data } = response.data;
     console.log('dataaaaaa', response.data);
-    console.log('dataaaaaa', data.amount, 'amount');
+    console.log('dataaaaaa', data.amount, 'amount', amount);
 
     // Compare the amounts (both are in Kobo)
-    if (status === 'success') {
+    if (status === 'success' && data.amount === amount) {
       // Store the amount in Naira by dividing by 100 for readability
       const payment = new UserPayment(reference);
-
       await payment.save();
 
       return res
