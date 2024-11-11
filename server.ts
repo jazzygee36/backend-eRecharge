@@ -28,9 +28,9 @@ app.use('/api', userProfile);
 (sequelize.query('SELECT 1') as unknown as Promise<any>)
   .then(() => {
     console.log('Connected to DB');
-    app.listen(Port, () => {
-      console.log(`Server is running on port ${Port}`);
-    });
+    // app.listen(Port, () => {
+    //   console.log(`Server is running on port ${Port}`);
+    // });
   })
   .catch((error) => {
     console.error('Failed to connect to the database:', error);
